@@ -7,4 +7,4 @@
 # GRADLE download
 # POSTGRES(you need a username, password and database url) download
 # JAVAFX download for the UI DESIGN
-
+# RUN 'gradle build'and 'gradle run' 
