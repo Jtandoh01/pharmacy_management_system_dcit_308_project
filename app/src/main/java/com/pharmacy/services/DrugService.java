@@ -23,6 +23,26 @@ public class DrugService {
         }
     }
 
+    public Drug getDrugByCode(String drugCode) {
+        Drug drug = null;
+        try (Connection connection = Database.getConnection()) {
+            String query = "SELECT * FROM Drugs WHERE drugCode = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, drugCode);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    String name = resultSet.getString("name");
+                    String description = resultSet.getString("description");
+                    int quantity = resultSet.getInt("quantity");
+                    drug = new Drug(drugCode, name, description, quantity);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return drug;
+    }
+
     public void addDrugSupplier(String drugCode, int supplierId) {
         String query = "INSERT INTO DrugSuppliers (drugCode, supplierId) VALUES (?, ?)";
         try (Connection conn = Database.getConnection();

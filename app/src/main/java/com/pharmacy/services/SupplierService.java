@@ -10,11 +10,12 @@ import java.util.List;
 public class SupplierService {
     public void addSupplier(Supplier supplier) {
         String query = "INSERT INTO Suppliers (name, location) VALUES (?, ?)";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, supplier.getName());
-            pstmt.setString(2, supplier.getLocation());
-            pstmt.executeUpdate();
+        try (Connection connection = Database.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, supplier.getName());
+                statement.setString(2, supplier.getLocation());
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,17 +40,23 @@ public class SupplierService {
     public List<Supplier> getAllSuppliers() {
         List<Supplier> suppliers = new ArrayList<>();
         String query = "SELECT * FROM Suppliers";
-        try (Connection conn = Database.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()) {
-                suppliers.add(new Supplier(rs.getString("name"), rs.getString("location")));
+        try (Connection conn = Database.getConnection()) {
+            if (conn != null) {
+                try (Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery(query)) {
+                    while (rs.next()) {
+                        suppliers.add(new Supplier(rs.getInt("id"), rs.getString("name"), rs.getString("location")));
+                    }
+                }
+            } else {
+                System.err.println("Failed to make connection to the database.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return suppliers;
     }
+
 
     public void updateSupplier(Supplier supplier) {
         String query = "UPDATE Suppliers SET name = ?, location = ? WHERE id = ?";

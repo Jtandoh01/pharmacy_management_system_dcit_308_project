@@ -26,7 +26,8 @@ CREATE TABLE DrugSuppliers (
 CREATE TABLE Customers (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    contactNumber VARCHAR(20)
+    contactNumber VARCHAR(20),
+    address VARCHAR(255) NOT NULL
 );
 
 -- Update the PurchaseHistory table to include customer information
