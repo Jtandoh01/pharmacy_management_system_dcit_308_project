@@ -1,0 +1,195 @@
+/* Define styles for the main container */
+.root {
+  -fx-padding: 20px;
+  -fx-spacing: 15px;
+  -fx-alignment: center;
+  -fx-background-color: #f7f7f7;
+  -fx-border-color: #dedede;
+  -fx-border-width: 2px;
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+}
+
+.title {
+  -fx-font-size: 24px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333333; /* Dark gray text */
+  -fx-padding: 0 0 20px 0;
+}
+
+.button {
+  -fx-background-color: #af4c72; /* Purple button background */
+  -fx-text-fill: white; /* White text color */
+  -fx-font-size: 14px;
+  -fx-padding: 10px 20px;
+  -fx-cursor: hand;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+}
+
+.button:hover {
+  -fx-background-color: #af6d88; /* Lighter purple on hover */
+}
+
+.label {
+  -fx-font-size: 16px;
+  -fx-text-fill: #333333; /* Dark gray text */
+  -fx-padding: 10px 0;
+}
+
+.text-field {
+  -fx-font-size: 14px;
+  -fx-pref-width: 200px;
+  -fx-padding: 5px;
+  -fx-background-radius: 5px;
+}
+
+.drug-box {
+  -fx-background-color: #FFC107; /* Amber background */
+  -fx-padding: 15px;
+  -fx-spacing: 10px;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 1);
+  -fx-border-width: 1px;
+  -fx-border-color: #FFA000; /* Darker amber border */
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+}
+
+.drug-box:hover {
+  -fx-background-color: #FFD54F; /* Lighter amber on hover */
+}
+
+.drug-name {
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333333; /* Dark gray text */
+}
+
+.drug-details {
+  -fx-font-size: 14px;
+  -fx-text-fill: #666666; /* Gray text */
+}
+
+.supplier-box {
+  -fx-background-color: #03A9F4; /* Light blue background */
+  -fx-padding: 15px;
+  -fx-spacing: 10px;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 1);
+  -fx-border-width: 1px;
+  -fx-border-color: #0288D1; /* Darker blue border */
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+}
+
+.supplier-box:hover {
+  -fx-background-color: #4FC3F7; /* Lighter blue on hover */
+}
+
+.supplier-name {
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333333; /* Dark gray text */
+}
+
+.supplier-details {
+  -fx-font-size: 14px;
+  -fx-text-fill: #666666; /* Gray text */
+}
+
+.customer-box {
+  -fx-background-color: #8BC34A; /* Light green background */
+  -fx-padding: 15px;
+  -fx-spacing: 10px;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 1);
+  -fx-border-width: 1px;
+  -fx-border-color: #689F38; /* Darker green border */
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+}
+
+.customer-box:hover {
+  -fx-background-color: #AED581; /* Lighter green on hover */
+}
+
+.customer-name {
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333333; /* Dark gray text */
+}
+
+.customer-details {
+  -fx-font-size: 14px;
+  -fx-text-fill: #666666; /* Gray text */
+}
+
+/* Form container styling */
+.form-container {
+  -fx-background-color: #f7f7f7; /* Light gray background */
+  -fx-padding: 20px;
+}
+
+.form-title {
+  -fx-font-size: 24px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333333; /* Dark gray text */
+  -fx-padding: 0 0 20px 0;
+}
+
+.form-label {
+  -fx-font-size: 16px;
+  -fx-text-fill: #333333; /* Dark gray text */
+  -fx-padding: 10px 0;
+}
+
+.form-input {
+  -fx-font-size: 14px;
+  -fx-pref-width: 300px;
+  -fx-padding: 5px;
+  -fx-background-radius: 5px;
+}
+
+.form-button {
+  -fx-background-color: #4CAF50; /* Green button background */
+  -fx-text-fill: white; /* White text color */
+  -fx-font-size: 14px;
+  -fx-padding: 10px 20px;
+  -fx-cursor: hand;
+  -fx-background-radius: 5px;
+  -fx-border-radius: 5px;
+}
+
+.form-button:hover {
+  -fx-background-color: #45a049; /* Darker green on hover */
+}
+
+.error-label {
+  -fx-font-size: 16px;
+  -fx-padding: 10;
+  -fx-text-fill: red; /* Red text for error messages */
+}
+
+.box {
+  -fx-background-color: #FFD700; /* Gold background */
+  -fx-padding: 15px;
+  -fx-spacing: 10px;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 1);
+  -fx-border-width: 1px;
+  -fx-border-color: #DAA520; /* Darker gold border */
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+}
+
+.box:hover {
+  -fx-background-color: #FFEC8B; /* Lighter gold on hover */
+}
+
+.box-title {
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #333333; /* Dark gray text */
+}
+
+.box-subtitle {
+  -fx-font-size: 14px;
+  -fx-text-fill: #666666; /* Gray text */
+}
