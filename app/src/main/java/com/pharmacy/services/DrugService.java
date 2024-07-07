@@ -1,3 +1,4 @@
+
 package com.pharmacy.services;
 
 import com.pharmacy.models.Drug;
@@ -9,11 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DrugService {
+
+    /**
+     * Adds a new drug to the database.
+     *
+     * @param drug The Drug object to be added.
+     */
     public void addDrug(Drug drug) {
         String query = "INSERT INTO Drugs (drugCode, name, description, quantity, price) VALUES (?, ?, ?, ?,?)";
         try (Connection conn = Database.getDataSource().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, drug.getDrugCode ());
+            pstmt.setString(1, drug.getDrugCode());
             pstmt.setString(2, drug.getName());
             pstmt.setString(3, drug.getDescription());
             pstmt.setInt(4, drug.getQuantity());
@@ -24,7 +31,13 @@ public class DrugService {
         }
     }
 
-    public Drug getDrugByCode (String drugCode) {
+    /**
+     * Retrieves a drug from the database based on its drug code.
+     *
+     * @param drugCode The code of the drug to be retrieved.
+     * @return The Drug object if found, otherwise null.
+     */
+    public Drug getDrugByCode(String drugCode) {
         Drug drug = null;
         try (Connection connection = Database.getDataSource().getConnection()) {
             String query = "SELECT * FROM Drugs WHERE drugCode = ?";
@@ -44,8 +57,13 @@ public class DrugService {
         }
         return drug;
     }
-   
 
+    /**
+     * Adds a supplier to a drug in the database.
+     *
+     * @param drugCode The code of the drug to which the supplier is to be added.
+     * @param supplier The Supplier object to be added.
+     */
     public void addSupplierToDrug(String drugCode, Supplier supplier) {
         try (Connection connection = Database.getDataSource().getConnection()) {
             // Insert supplier if not already in database
@@ -76,7 +94,12 @@ public class DrugService {
         }
     }
 
-    // Method to add a new drug with suppliers
+    /**
+     * Adds a new drug along with its suppliers to the database.
+     *
+     * @param drug      The Drug object to be added.
+     * @param suppliers The list of Supplier objects to be added for the drug.
+     */
     public void addDrugWithSuppliers(Drug drug, List<Supplier> suppliers) {
         try (Connection connection = Database.getDataSource().getConnection()) {
             // Insert the drug
@@ -98,6 +121,12 @@ public class DrugService {
         }
     }
 
+    /**
+     * Searches for a drug by its code.
+     *
+     * @param drugCode The code of the drug to be searched.
+     * @return The Drug object if found, otherwise null.
+     */
     public Drug searchDrug(String drugCode) {
         String query = "SELECT * FROM Drugs WHERE drugCode = ?";
         try (Connection conn = Database.getDataSource().getConnection();
@@ -113,6 +142,11 @@ public class DrugService {
         return null;
     }
 
+    /**
+     * Retrieves all drugs from the database.
+     *
+     * @return A list of Drug objects.
+     */
     public List<Drug> getAllDrugs() {
         List<Drug> drugs = new ArrayList<>();
         try (Connection connection = Database.getDataSource().getConnection()) {
@@ -141,7 +175,7 @@ public class DrugService {
                             supplierResultSet.getInt("id"),
                             supplierResultSet.getString("name"),
                             supplierResultSet.getString("location")
-                            
+
                     );
                     suppliers.add(supplier);
                 }
@@ -154,46 +188,12 @@ public class DrugService {
         }
         return drugs;
     }
-    // public List<Drug> getAllDrugs() {
-    //     List<Drug> drugs = new ArrayList<>();
-    //     String query = "SELECT * FROM Drugs";
-    //     try (Connection conn = Database.getDataSource().getConnection();
-    //          Statement stmt = conn.createStatement();
-    //          ResultSet rs = stmt.executeQuery(query)) {
-    //         while (rs.next()) {
-    //             Drug drug = new Drug(rs.getString("drugCode"), rs.getString("name"), rs.getString("description"), rs.getInt("quantity"), rs.getFloat("price"));
-    //              // Fetch suppliers for this drug
-    //              drug.setSuppliers(getSuppliersByDrugCode(drug.getDrugCode()), );
-    //              drugs.add(drug);
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return drugs;
-    // }
 
-    // public List<Supplier> getSuppliersByDrugCode(String drugCode) {
-    //     List<Supplier> suppliers = new ArrayList<>();
-    //     String query = "SELECT s.* FROM Suppliers s " +
-    //                    "JOIN DrugSuppliers ds ON s.id = ds.supplierId " +
-    //                    "WHERE ds.drugCode = ?";
-    //     try (Connection conn = Database.getDataSource().getConnection();
-    //          PreparedStatement pstmt = conn.prepareStatement(query)) {
-    //         pstmt.setString(1, drugCode);
-    //         ResultSet rs = pstmt.executeQuery();
-    //         while (rs.next()) {
-    //             suppliers.add(new Supplier(
-    //                     rs.getInt("id"),
-    //                     rs.getString("name"),
-    //                     rs.getString("location")                       
-    //             ));
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return suppliers;
-    // }
-
+    /**
+     * Updates an existing drug in the database.
+     *
+     * @param drug The Drug object containing updated information.
+     */
     public void updateDrug(Drug drug) {
         String query = "UPDATE Drugs SET name = ?, description = ?, quantity = ? , price = ? WHERE drugCode = ?";
         try (Connection conn = Database.getDataSource().getConnection();
@@ -202,13 +202,18 @@ public class DrugService {
             pstmt.setString(2, drug.getDescription());
             pstmt.setInt(3, drug.getQuantity());
             pstmt.setFloat(4, drug.getPrice());
-            pstmt.setString(5, drug.getDrugCode ());
+            pstmt.setString(5, drug.getDrugCode());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Deletes a drug from the database based on its code.
+     *
+     * @param drugCode The code of the drug to be deleted.
+     */
     public void deleteDrug(String drugCode) {
         String query = "DELETE FROM Drugs WHERE drugCode = ?";
         try (Connection conn = Database.getDataSource().getConnection();
@@ -220,6 +225,12 @@ public class DrugService {
         }
     }
 
+    /**
+     * Updates the stock quantity of a drug in the database.
+     *
+     * @param drugCode The code of the drug to be updated.
+     * @param quantity The quantity to be added to the current stock.
+     */
     public void updateStock(String drugCode, int quantity) {
         String query = "UPDATE Drugs SET quantity = quantity + ? WHERE drugCode = ?";
         try (Connection conn = Database.getDataSource().getConnection();
@@ -232,6 +243,10 @@ public class DrugService {
         }
     }
 
+    /**
+     * Checks the stock levels of all drugs and prints those that are below```java
+     * a predefined threshold.
+     */
     public void checkStockLevels() {
         String query = "SELECT * FROM Drugs WHERE quantity < ?";
         int threshold = 10; // Example threshold value
@@ -247,6 +262,12 @@ public class DrugService {
         }
     }
 
+    /**
+     * Retrieves the list of suppliers for a specific drug.
+     *
+     * @param drugCode The code of the drug whose suppliers are to be retrieved.
+     * @return A list of Supplier objects.
+     */
     public List<Supplier> getSuppliersForDrug(String drugCode) {
         List<Supplier> suppliers = new ArrayList<>();
         String query = "SELECT Suppliers.* FROM Suppliers INNER JOIN DrugSuppliers ON Suppliers.id = DrugSuppliers.supplierId WHERE DrugSuppliers.drugCode = ?";
@@ -263,6 +284,12 @@ public class DrugService {
         return suppliers;
     }
 
+    /**
+     * Searches for suppliers based on their location.
+     *
+     * @param location The location to search for suppliers.
+     * @return A list of Supplier objects matching the location.
+     */
     public List<Supplier> searchSuppliers(String location) {
         List<Supplier> matchingSuppliers = new ArrayList<>();
         try (Connection connection = Database.getDataSource().getConnection()) {
@@ -283,280 +310,3 @@ public class DrugService {
         return matchingSuppliers;
     }
 }
-
-//SECOND
-
-// package com.pharmacy.services;
-
-// import com.pharmacy.models.Drug;
-// import com.pharmacy.models.Supplier;
-// import com.pharmacy.utils.Database;
-
-// import java.sql.*;
-// import java.util.ArrayList;
-// import java.util.List;
-
-// public class DrugService {
-
-//     // Method to add a new drug to the database
-//     public void addDrug(Drug drug) {
-//         String query = "INSERT INTO Drugs (drugCode, name, description, quantity) VALUES (?, ?, ?, ?)";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drug.getDrugCode ());
-//             pstmt.setString(2, drug.getName());
-//             pstmt.setString(3, drug.getDescription());
-//             pstmt.setInt(4, drug.getQuantity());
-//             pstmt.executeUpdate();
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     }
-
-//     // Method to link a drug with a supplier
-//     public void addDrugSupplier(String drugCode, int supplierId) {
-//         String query = "INSERT INTO DrugSuppliers (drugCode, supplierId) VALUES (?, ?)";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             pstmt.setInt(2, supplierId);
-//             pstmt.executeUpdate();
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     }
-
-//     // Method to search for a drug by its code
-//     public Drug searchDrug(String drugCode) {
-//         String query = "SELECT * FROM Drugs WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             ResultSet rs = pstmt.executeQuery();
-//             if (rs.next()) {
-//                 return new Drug(rs.getString("drugCode"), rs.getString("name"), rs.getString("description"), rs.getInt("quantity"));
-//             }
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//         return null;
-//     }
-
-//     // Method to retrieve all drugs from the database
-//     public List<Drug> getAllDrugs() {
-//         List<Drug> drugs = new ArrayList<>();
-//         String query = "SELECT * FROM Drugs";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              Statement stmt = conn.createStatement();
-//              ResultSet rs = stmt.executeQuery(query)) {
-//             while (rs.next()) {
-//                 drugs.add(new Drug(rs.getString("drugCode"), rs.getString("name"), rs.getString("description"), rs.getInt("quantity")));
-//             }
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//         return drugs;
-//     }
-
-//     // Method to update drug details
-//     public void updateDrug(Drug drug) {
-//         String query = "UPDATE Drugs SET name = ?, description = ?, quantity = ? WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drug.getName());
-//             pstmt.setString(2, drug.getDescription());
-//             pstmt.setInt(3, drug.getQuantity());
-//             pstmt.setString(4, drug.getDrugCode ());
-//             pstmt.executeUpdate();
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     }
-
-//     // Method to delete a drug from the database
-//     public void deleteDrug(String drugCode) {
-//         String query = "DELETE FROM Drugs WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             pstmt.executeUpdate();
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     }
-
-//     // Method to update the stock quantity of a drug
-//     public void updateStock(String drugCode, int quantity) {
-//         String query = "UPDATE Drugs SET quantity = quantity + ? WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setInt(1, quantity);
-//             pstmt.setString(2, drugCode);
-//             pstmt.executeUpdate();
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     }
-
-//     // Method to check and print drugs that are low on stock
-//     public void checkStockLevels() {
-//         String query = "SELECT * FROM Drugs WHERE quantity < ?";
-//         int threshold = 10; // Example threshold value
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setInt(1, threshold);
-//             ResultSet rs = pstmt.executeQuery();
-//             while (rs.next()) {
-//                 System.out.println("Drug " + rs.getString("name") + " is low on stock: " + rs.getInt("quantity"));
-//             }
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     }
-
-//     // Method to get the list of suppliers for a specific drug
-//     public List<Supplier> getSuppliersForDrug(String drugCode) {
-//         List<Supplier> suppliers = new ArrayList<>();
-//         String query = "SELECT Suppliers.* FROM Suppliers INNER JOIN DrugSuppliers ON Suppliers.id = DrugSuppliers.supplierId WHERE DrugSuppliers.drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             ResultSet rs = pstmt.executeQuery();
-//             while (rs.next()) {
-//                 suppliers.add(new Supplier(rs.getInt("id"), rs.getString("name"), rs.getString("location")));
-//             }
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//         return suppliers;
-//     }
-// }
-
-// package com.pharmacy.services;
-
-// import com.pharmacy.models.Drug;
-// import com.pharmacy.models.Supplier;
-// import com.pharmacy.utils.Database;
-
-// import java.sql.*;
-// import java.util.ArrayList;
-// import java.util.List;
-
-// public class DrugService {
-
-//     // Method to add a new drug to the database
-//     public void addDrug(Drug drug) throws SQLException {
-//         String query = "INSERT INTO Drugs (drugCode, name, description, quantity) VALUES (?, ?, ?, ?)";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drug.getDrugCode ());
-//             pstmt.setString(2, drug.getName());
-//             pstmt.setString(3, drug.getDescription());
-//             pstmt.setInt(4, drug.getQuantity());
-//             pstmt.executeUpdate();
-//         }
-//     }
-
-//     // Method to link a drug with a supplier
-//     public void addDrugSupplier(String drugCode, int supplierId) throws SQLException {
-//         String query = "INSERT INTO DrugSuppliers (drugCode, supplierId) VALUES (?, ?)";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             pstmt.setInt(2, supplierId);
-//             pstmt.executeUpdate();
-//         }
-//     }
-
-//     // Method to search for a drug by its code
-//     public Drug searchDrug(String drugCode) throws SQLException {
-//         String query = "SELECT * FROM Drugs WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             ResultSet rs = pstmt.executeQuery();
-//             if (rs.next()) {
-//                 return new Drug(rs.getString("drugCode"), rs.getString("name"), rs.getString("description"), rs.getInt("quantity"));
-//             }
-//         }
-//         return null;
-//     }
-
-//     // Method to retrieve all drugs from the database
-//     public List<Drug> getAllDrugs() throws SQLException {
-//         List<Drug> drugs = new ArrayList<>();
-//         String query = "SELECT * FROM Drugs";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              Statement stmt = conn.createStatement();
-//              ResultSet rs = stmt.executeQuery(query)) {
-//             while (rs.next()) {
-//                 drugs.add(new Drug(rs.getString("drugCode"), rs.getString("name"), rs.getString("description"), rs.getInt("quantity")));
-//             }
-//         }
-//         return drugs;
-//     }
-
-//     // Method to update drug details
-//     public void updateDrug(Drug drug) throws SQLException {
-//         String query = "UPDATE Drugs SET name = ?, description = ?, quantity = ? WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drug.getName());
-//             pstmt.setString(2, drug.getDescription());
-//             pstmt.setInt(3, drug.getQuantity());
-//             pstmt.setString(4, drug.getDrugCode ());
-//             pstmt.executeUpdate();
-//         }
-//     }
-
-//     // Method to delete a drug from the database
-//     public void deleteDrug(String drugCode) throws SQLException {
-//         String query = "DELETE FROM Drugs WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             pstmt.executeUpdate();
-//         }
-//     }
-
-//     // Method to update the stock quantity of a drug
-//     public void updateStock(String drugCode, int quantity) throws SQLException {
-//         String query = "UPDATE Drugs SET quantity = quantity + ? WHERE drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setInt(1, quantity);
-//             pstmt.setString(2, drugCode);
-//             pstmt.executeUpdate();
-//         }
-//     }
-
-//     // Method to check and print drugs that are low on stock
-//     public void checkStockLevels() throws SQLException {
-//         String query = "SELECT * FROM Drugs WHERE quantity < ?";
-//         int threshold = 10; // Example threshold value
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setInt(1, threshold);
-//             ResultSet rs = pstmt.executeQuery();
-//             while (rs.next()) {
-//                 System.out.println("Drug " + rs.getString("name") + " is low on stock: " + rs.getInt("quantity"));
-//             }
-//         }
-//     }
-
-//     // Method to get the list of suppliers for a specific drug
-//     public List<Supplier> getSuppliersForDrug(String drugCode) throws SQLException {
-//         List<Supplier> suppliers = new ArrayList<>();
-//         String query = "SELECT Suppliers.* FROM Suppliers INNER JOIN DrugSuppliers ON Suppliers.id = DrugSuppliers.supplierId WHERE DrugSuppliers.drugCode = ?";
-//         try (Connection conn = Database.getDataSource().getConnection();
-//              PreparedStatement pstmt = conn.prepareStatement(query)) {
-//             pstmt.setString(1, drugCode);
-//             ResultSet rs = pstmt.executeQuery();
-//             while (rs.next()) {
-//                 suppliers.add(new Supplier(rs.getInt("id"), rs.getString("name"), rs.getString("location")));
-//             }
-//         }
-//         return suppliers;
-//     }
-// }
-

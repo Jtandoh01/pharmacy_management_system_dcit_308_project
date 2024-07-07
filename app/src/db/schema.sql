@@ -17,7 +17,7 @@ CREATE TABLE Suppliers (
 -- ADD UNIQUES CONSTRAINT TO name and location fields
 -- Add the unique constraint to the suppliers table
 ALTER TABLE suppliers
-ADD CONSTRAINT unique_name_location UNIQUE (name, location);
+ADD CONSTRAINT unl UNIQUE (name, location);
 
 
 -- Create the DrugSuppliers table to manage the many-to-many relationship
