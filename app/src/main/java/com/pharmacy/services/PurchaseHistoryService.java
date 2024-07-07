@@ -26,34 +26,13 @@ public class PurchaseHistoryService {
         }
     }
 
-    // public List<PurchaseHistory> getPurchaseHistory(String drugCode) {
-    //     List<PurchaseHistory> historyList = new ArrayList<>();
-    //     String query = "SELECT * FROM PurchaseHistory WHERE drugCode = ? ORDER BY purchaseDateTime DESC";
-    //     try (Connection conn = Database.getDataSource().getConnection();
-    //          PreparedStatement pstmt = conn.prepareStatement(query)) {
-    //         pstmt.setString(1, drugCode);
-    //         ResultSet rs = pstmt.executeQuery();
-    //         while (rs.next()) {
-    //             historyList.add(new PurchaseHistory(
-    //                     rs.getInt("id"),
-    //                     rs.getTimestamp("purchaseDateTime").toLocalDateTime(),
-    //                     rs.getString("drugCode"),
-    //                     rs.getString("buyer"),
-    //                     rs.getInt("customerId"),
-    //                     rs.getInt("quantity"),
-    //                     rs.getDouble("totalAmount")
-    //             ));
-    //         }
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-        
-        
-    // }
+    
 
     public List<PurchaseHistory> getPurchaseHistory(String drugCode) {
         List<PurchaseHistory> historyList = new ArrayList<>();
-        String query = "SELECT * FROM PurchaseHistory WHERE drugCode = ? ORDER BY purchaseDateTime DESC";
+        String query = "SELECT ph.id,ph.purchaseDateTime, ph.drugCode, c.name AS buyer, ph.customerId, ph.quantity, ph.totalAmount " + "FROM PurchaseHistory ph " + "LEFT JOIN Customers c ON ph.customerId = c.id " + "WHERE ph.drugCode = ? " + "ORDER BY ph.purchaseDateTime DESC";
+        
+        //"SELECT * FROM PurchaseHistory WHERE drugCode = ? ORDER BY purchaseDateTime DESC";
         try (Connection conn = Database.getDataSource().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, drugCode);
@@ -77,11 +56,12 @@ public class PurchaseHistoryService {
         SaleService saleService = new SaleService();
         List<Sale> salesList = saleService.getSalesByDrugCode(drugCode);
         for (Sale sale : salesList) {
+            String customerName = getCustomerNameById(sale.getCustomerId());
             PurchaseHistory history = new PurchaseHistory(
                 sale.getId(),
                 sale.getDateTime(),
                 sale.getDrugCode (),
-                "",  // Buyer is not specified in Sales, so we leave it empty or can use a placeholder
+                customerName,
                 sale.getCustomerId(),
                 sale.getQuantity(),
                 sale.getTotalAmount()
@@ -106,5 +86,20 @@ public class PurchaseHistoryService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    private String getCustomerNameById(int customerId) {
+        String query = "SELECT name FROM Customers WHERE id = ?";
+        try (Connection conn = Database.getDataSource().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, customerId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
