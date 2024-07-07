@@ -1,3 +1,4 @@
+
 package com.pharmacy.services;
 
 import com.pharmacy.models.Customer;
@@ -8,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
+
+    /**
+     * Adds a new customer to the database.
+     *
+     * @param customer The Customer object to be added.
+     */
     public void addCustomer(Customer customer) {
         try (Connection connection = Database.getDataSource().getConnection()) {
             String query = "INSERT INTO Customers (name, contact, address) VALUES (?, ?, ?)";
@@ -21,6 +28,13 @@ public class CustomerService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Retrieves a customer from the database based on their ID.
+     *
+     * @param id The ID of the customer.
+     * @return The Customer object if found, null otherwise.
+     */
     public Customer getCustomerById(int id) {
         Customer customer = null;
         try (Connection connection = Database.getDataSource().getConnection()) {
@@ -32,7 +46,6 @@ public class CustomerService {
                     String name = resultSet.getString("name");
                     String contact = resultSet.getString("contact");
                     String address = resultSet.getString("address");
-                    System.out.println("Executing query: " + statement);
                     customer = new Customer(id, name, contact, address);
                 }
             }
@@ -43,6 +56,11 @@ public class CustomerService {
         return customer;
     }
 
+    /**
+     * Retrieves all customers from the database.
+     *
+     * @return A list of Customer objects.
+     */
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
         String query = "SELECT * FROM Customers";
@@ -66,5 +84,4 @@ public class CustomerService {
         }
         return customers;
     }
-    
 }
