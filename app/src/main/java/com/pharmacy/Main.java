@@ -136,54 +136,54 @@ public class Main extends Application {
 
     
 
-    private void showAddDrugForm(Stage primaryStage) {
-        VBox vbox = new VBox();
-        vbox.getStyleClass().add("root");
+    // private void showAddDrugForm(Stage primaryStage) {
+    //     VBox vbox = new VBox();
+    //     vbox.getStyleClass().add("root");
 
-        TextField drugCodeField = new TextField();
-        TextField nameField = new TextField();
-        TextField descriptionField = new TextField();
-        TextField quantityField = new TextField();
-        TextField priceField = new TextField();
-        Button submitButton = new Button("Submit");
-        Button backButton = new Button("Back");
+    //     TextField drugCodeField = new TextField();
+    //     TextField nameField = new TextField();
+    //     TextField descriptionField = new TextField();
+    //     TextField quantityField = new TextField();
+    //     TextField priceField = new TextField();
+    //     Button submitButton = new Button("Submit");
+    //     Button backButton = new Button("Back");
 
-        drugCodeField.setPromptText("Drug Code");
-        nameField.setPromptText("Name");
-        descriptionField.setPromptText("Description");
-        quantityField.setPromptText("Quantity");
-        priceField.setPromptText("Price");
+    //     drugCodeField.setPromptText("Drug Code");
+    //     nameField.setPromptText("Name");
+    //     descriptionField.setPromptText("Description");
+    //     quantityField.setPromptText("Quantity");
+    //     priceField.setPromptText("Price");
 
-        drugCodeField.getStyleClass().add("text-field");
-        nameField.getStyleClass().add("text-field");
-        descriptionField.getStyleClass().add("text-field");
-        quantityField.getStyleClass().add("text-field");
-        priceField.getStyleClass().add("text-field");
-        submitButton.getStyleClass().add("button");
-        backButton.getStyleClass().add("button");
+    //     drugCodeField.getStyleClass().add("text-field");
+    //     nameField.getStyleClass().add("text-field");
+    //     descriptionField.getStyleClass().add("text-field");
+    //     quantityField.getStyleClass().add("text-field");
+    //     priceField.getStyleClass().add("text-field");
+    //     submitButton.getStyleClass().add("button");
+    //     backButton.getStyleClass().add("button");
 
-        submitButton.setOnAction(event -> {
-            String drugCode = drugCodeField.getText();
-            String name = nameField.getText();
-            String description = descriptionField.getText();
-            int quantity = Integer.parseInt(quantityField.getText());
-            Float price = Float.parseFloat(priceField.getText());
+    //     submitButton.setOnAction(event -> {
+    //         String drugCode = drugCodeField.getText();
+    //         String name = nameField.getText();
+    //         String description = descriptionField.getText();
+    //         int quantity = Integer.parseInt(quantityField.getText());
+    //         Float price = Float.parseFloat(priceField.getText());
             
 
-            DrugService drugService = new DrugService();
-            drugService.addDrug(new Drug(drugCode, name, description, quantity,price));
+    //         DrugService drugService = new DrugService();
+    //         drugService.addDrug(new Drug(drugCode, name, description, quantity,price));
 
-            showSuccessMessage(primaryStage, "Drug added successfully!");
-        });
+    //         showSuccessMessage(primaryStage, "Drug added successfully!");
+    //     });
 
-        backButton.setOnAction(event -> backButtonHandler.goBack());
+    //     backButton.setOnAction(event -> backButtonHandler.goBack());
 
-        vbox.getChildren().addAll(drugCodeField, nameField, descriptionField, quantityField, priceField,submitButton, backButton);
-        Scene scene = new Scene(vbox, 400, 350);
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-        backButtonHandler.pushScene(primaryStage.getScene());
-        primaryStage.setScene(scene);
-    }
+    //     vbox.getChildren().addAll(drugCodeField, nameField, descriptionField, quantityField, priceField,submitButton, backButton);
+    //     Scene scene = new Scene(vbox, 400, 350);
+    //     scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+    //     backButtonHandler.pushScene(primaryStage.getScene());
+    //     primaryStage.setScene(scene);
+    // }
 
     private void showSuccessMessage(Stage primaryStage, String message) {
         VBox vbox = new VBox();
@@ -202,16 +202,91 @@ public class Main extends Application {
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         primaryStage.setScene(scene);
     }
+    private void showAddDrugForm(Stage primaryStage) {
+        VBox vbox = new VBox();
+        vbox.getStyleClass().add("root");
+    
+        TextField drugCodeField = new TextField();
+        TextField nameField = new TextField();
+        TextField descriptionField = new TextField();
+        TextField quantityField = new TextField();
+        TextField priceField = new TextField();
+        TextField supplierNameField = new TextField();
+        TextField supplierLocationField = new TextField();
+        
+        Button addButton = new Button("Add Drug");
+        Button backButton = new Button("Back");
+    
+        drugCodeField.setPromptText("Drug Code");
+        nameField.setPromptText("Name");
+        descriptionField.setPromptText("Description");
+        quantityField.setPromptText("Quantity");
+        priceField.setPromptText("Price");
+        supplierNameField.setPromptText("Supplier Name");
+        supplierLocationField.setPromptText("Supplier Location");
+        
+    
+        drugCodeField.getStyleClass().add("text-field");
+        nameField.getStyleClass().add("text-field");
+        descriptionField.getStyleClass().add("text-field");
+        quantityField.getStyleClass().add("text-field");
+        priceField.getStyleClass().add("text-field");
+        supplierNameField.getStyleClass().add("text-field");
+        supplierLocationField.getStyleClass().add("text-field");
+        
+        addButton.getStyleClass().add("button");
+        backButton.getStyleClass().add("button");
+    
+        vbox.getChildren().addAll(
+            drugCodeField, nameField, descriptionField, quantityField, priceField,
+            supplierNameField, supplierLocationField,addButton, backButton
+        );
+    
+        addButton.setOnAction(event -> {
+            String drugCode = drugCodeField.getText();
+            String name = nameField.getText();
+            String description = descriptionField.getText();
+            int quantity = Integer.parseInt(quantityField.getText());
+            Float price = Float.parseFloat(priceField.getText());
+            String supplierName = supplierNameField.getText();
+            String supplierLocation = supplierLocationField.getText();
+            
+    
+            Drug drug = new Drug(drugCode, name, description, quantity, price);
+            Supplier supplier = new Supplier(0, supplierName, supplierLocation); // id is set to 0, it will be set when inserted into DB
+            DrugService drugService = new DrugService();
+            drugService.addDrugWithSuppliers(drug, List.of(supplier));
+    
+            showSuccessMessage(primaryStage,"Drug added successfully with supplier.");
+    
+            // Clear fields
+            drugCodeField.clear();
+            nameField.clear();
+            descriptionField.clear();
+            quantityField.clear();
+            priceField.clear();
+            supplierNameField.clear();
+            supplierLocationField.clear();
+           
+        });
+    
+        backButton.setOnAction(event -> backButtonHandler.goBack());
+    
+        Scene scene = new Scene(vbox, 400, 350);
+        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        backButtonHandler.pushScene(primaryStage.getScene());
+        primaryStage.setScene(scene);
+    }
 
     private void showViewDrugs(Stage primaryStage) {
         VBox vbox = new VBox();
         vbox.getStyleClass().add("root");
-
+    
         DrugService drugService = new DrugService();
         List<Drug> drugs = drugService.getAllDrugs();
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("button");
-
+    
         if (drugs.isEmpty()) {
             Label noDrugsLabel = new Label("No drugs available.");
             noDrugsLabel.getStyleClass().add("label");
@@ -219,46 +294,63 @@ public class Main extends Application {
         } else {
             VBox drugsContainer = new VBox();
             drugsContainer.getStyleClass().add("drugs-container");
-
+    
             for (Drug drug : drugs) {
                 VBox drugBox = new VBox();
                 drugBox.getStyleClass().add("drug-box");
-
+    
                 Label drugNameLabel = new Label(drug.getName());
                 drugNameLabel.getStyleClass().add("drug-name");
-
-                Label drugCodeLabel = new Label("Code: " + drug.getDrugCode ());
+    
+                Label drugCodeLabel = new Label("Code: " + drug.getDrugCode());
                 drugCodeLabel.getStyleClass().add("drug-details");
-
+    
                 Label drugDescriptionLabel = new Label("Description: " + drug.getDescription());
                 drugDescriptionLabel.getStyleClass().add("drug-details");
-
+    
                 Label drugQuantityLabel = new Label("Quantity: " + drug.getQuantity());
                 drugQuantityLabel.getStyleClass().add("drug-details");
-
+    
                 Label drugPriceLabel = new Label("Price: " + drug.getPrice());
                 drugPriceLabel.getStyleClass().add("drug-details");
-
-                drugBox.getChildren().addAll(drugNameLabel, drugCodeLabel, drugDescriptionLabel, drugQuantityLabel, drugPriceLabel);
+    
+                VBox suppliersContainer = new VBox();
+                suppliersContainer.getStyleClass().add("suppliers-container");
+    
+                if (drug.getSuppliers() == null || drug.getSuppliers().isEmpty()) {
+                    Label noSuppliersLabel = new Label("No suppliers available.");
+                    noSuppliersLabel.getStyleClass().add("supplier-details");
+                    suppliersContainer.getChildren().add(noSuppliersLabel);
+                } else {
+                    for (Supplier supplier : drug.getSuppliers()) {
+                        Label supplierLabel = new Label("Supplier: " + supplier.getName() + ", Location: " + supplier.getLocation());
+                        supplierLabel.getStyleClass().add("supplier-details");
+                        suppliersContainer.getChildren().add(supplierLabel);
+                    }
+                }
+    
+                drugBox.getChildren().addAll(drugNameLabel, drugCodeLabel, drugDescriptionLabel, drugQuantityLabel, drugPriceLabel, suppliersContainer);
                 drugsContainer.getChildren().add(drugBox);
             }
-
+    
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setContent(drugsContainer);
             scrollPane.setFitToWidth(true);
             scrollPane.getStyleClass().add("scroll-pane");
-
+    
             vbox.getChildren().add(scrollPane);
         }
-
+    
         backButton.setOnAction(event -> backButtonHandler.goBack());
         vbox.getChildren().add(backButton);
-
+    
         Scene scene = new Scene(vbox, 400, 350);
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         backButtonHandler.pushScene(primaryStage.getScene());
         primaryStage.setScene(scene);
-    }
+    }    
+
+    
 
     private void showAddSupplierForm(Stage primaryStage) {
         VBox vbox = new VBox();
