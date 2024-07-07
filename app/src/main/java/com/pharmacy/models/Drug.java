@@ -1,5 +1,6 @@
 package com.pharmacy.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Drug {
@@ -17,6 +18,7 @@ public class Drug {
         this.description = description;
         this.quantity = quantity;
         this.price = price;
+        this.suppliers = new ArrayList<>();
     }
 
     // Getters and Setters

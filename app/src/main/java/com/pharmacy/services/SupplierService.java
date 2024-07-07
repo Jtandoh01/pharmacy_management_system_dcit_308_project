@@ -46,7 +46,9 @@ public class SupplierService {
                      ResultSet rs = stmt.executeQuery(query)) {
                     while (rs.next()) {
                         suppliers.add(new Supplier(rs.getInt("id"), rs.getString("name"), rs.getString("location")));
+                    
                     }
+
                 }
             } else {
                 System.err.println("Failed to make connection to the database.");
