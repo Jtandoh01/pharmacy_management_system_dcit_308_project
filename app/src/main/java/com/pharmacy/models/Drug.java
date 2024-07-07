@@ -1,3 +1,5 @@
+
+
 package com.pharmacy.models;
 
 import java.util.ArrayList;
@@ -12,6 +14,15 @@ public class Drug {
     private List<Supplier> suppliers;
     private List<PurchaseHistory> purchaseHistory;
 
+    /**
+     * Constructor to initialize a Drug object.
+     *
+     * @param drugCode    The code of the drug.
+     * @param name        The name of the drug.
+     * @param description The description of the drug.
+     * @param quantity    The quantity of the drug.
+     * @param price       The price of the drug.
+     */
     public Drug(String drugCode, String name, String description, int quantity, Float price) {
         this.drugCode = drugCode;
         this.name = name;
@@ -22,7 +33,7 @@ public class Drug {
     }
 
     // Getters and Setters
-    public String getDrugCode () {
+    public String getDrugCode() {
         return drugCode;
     }
 
@@ -54,11 +65,11 @@ public class Drug {
         this.quantity = quantity;
     }
 
-    public void setPrice(Float price){
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    public Float getPrice(){
+    public Float getPrice() {
         return price;
     }
 
